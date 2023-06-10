@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css"><!--Style sheet  for the page linked here-->
+  <title>DRag-Drop</title>
+</head>
+
+<body>
+
+  <div class="container"> <!--Main container-->
+    <div class="left-container"><!--Drag container-->
+      <h3>DRAG </h3>
+      <!-- By using the draggable="true" we can easily drag the items and trigger events , we can keep here images, text ,icons etc-->
+      <div class="item" draggable="true">
+        <img src="/Images_sample/pexels-cottonbro-studio-4551319.jpg" alt="Image1">
+      </div>
+      <div class="item" draggable="true">
+        <img src="/Images_sample/pexels-cottonbro-studio-5082579.jpg" alt="Image2">
+      </div>
+      <div class="item" draggable="true">
+        Text (Lorem ipsum dolor sit amet.)</div>
+      <div class="item" draggable="true">
+        <i class="fa-solid fa-code"></i>
+      </div>
+      <div class="item" draggable="true">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+      </div>
+    </div>
+    <div class="right-container"><!--Drop container-->
+      <h3>DROP</h3>
+    </div>
+  </div>
+  <div class="btn">
+    <button id="reset-btn">Reset</button>
+  </div>
+  <script src="/script.js"></script><!--Javascript for this html page linked here-->
+    <!-- Script for icons -->
+  <script src="https://kit.fontawesome.com/12fb9645a5.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
