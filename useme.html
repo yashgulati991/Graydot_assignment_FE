@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DRag-Drop</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Oswald:wght@500&family=PT+Sans&display=swap');
+
+        body {
+            background-color: #54a0ff;
+            font-family: 'PT Sans', sans-serif;
+
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .container h3 {
+            user-select: none;
+
+        }
+
+        .left-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 400px;
+            height: 300px;
+            border-radius: 10px;
+            border: 2px solid rgb(194, 194, 194);
+            margin-top: 20px;
+            box-shadow: 18px 10px 18px #2e2e2e;
+            overflow-y: auto;
+        }
+
+        .right-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 400px;
+            height: 300px;
+            border-radius: 10px;
+            border: 2px solid rgb(194, 194, 194);
+            margin-left: 20px;
+            margin-top: 20px;
+            box-shadow: 18px 10px 18px #292929;
+            outline: none;
+            overflow-y: auto;
+        }
+
+        .item {
+            background-color: #53bdff;
+            padding: 5px;
+            margin-bottom: 5px;
+            cursor: move;
+        }
+
+        .item.dragged {
+            opacity: 20%;
+            border: 2px solid navajowhite;
+        }
+
+        .item img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .success-message {
+            color: rgb(190, 255, 39);
+            font-weight: bold;
+            margin-top: 10px;
+            text-shadow: 2px 9px 18px #007908;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn button {
+            width: 200px;
+            height: 50px;
+            margin-top: 40px;
+            outline: none;
+            color: rgb(0, 121, 154);
+            background-color: #c8d6e5;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 20px 9px 18px #292929;
+        }
+
+        .btn button:hover {
+            cursor: pointer;
+            background-color: black;
+            color: white;
+            border: 2px solid white;
+        }
+
+        @media screen and (min-width: 768px) {
+            .container {
+                flex-wrap: nowrap;
+            }
+
+            .left-container,
+            .right-container {
+                margin: 20px;
+            }
+
+            .btn {
+                margin-top: 0;
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container"> <!--Main container-->
+        <div class="left-container"><!--Drag container-->
+            <h3>DRAG </h3>
+            <div class="item" draggable="true">
+                <img src="/Images_sample/pexels-cottonbro-studio-4551319.jpg" alt="Image1">
+            </div>
+            <div class="item" draggable="true">
+                <img src="/Images_sample/pexels-cottonbro-studio-5082579.jpg" alt="Image2">
+            </div>
+            <div class="item" draggable="true">
+                Text (Lorem ipsum dolor sit amet.)</div>
+            <div class="item" draggable="true">
+                <i class="fa-solid fa-code"></i>
+            </div>
+            <div class="item" draggable="true">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+            </div>
+        </div>
+        <div class="right-container"><!--Drop container-->
+            <h3>DROP</h3>
+        </div>
+    </div>
+    <div class="btn">
+        <button id="reset-btn">Reset</button>
+    </div>
+
+    <script src="https://kit.fontawesome.com/12fb9645a5.js" crossorigin="anonymous"></script>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const items = document.querySelectorAll('.item');
+            const leftContainer = document.querySelector('.left-container');
+            const rightContainer = document.querySelector('.right-container');
+            const resetButton = document.querySelector('#reset-btn');
+
+            let draggedItem = null;
+
+
+            items.forEach(function (item) {
+                item.addEventListener('dragstart', dragStart);
+                item.addEventListener('dragend', dragEnd);
+            });
+
+            rightContainer.addEventListener('dragover', dragOver);
+            rightContainer.addEventListener('dragenter', dragEnter);
+            rightContainer.addEventListener('dragleave', dragLeave);
+            rightContainer.addEventListener('drop', drop);
+
+
+            resetButton.addEventListener('click', resetContainers);
+
+            // Dragging  functions listed here 
+            function dragStart() {
+                draggedItem = this;
+
+                setTimeout(() => this.style.display = 'none', 0);
+                this.classList.add('dragged');
+            }
+
+            function dragEnd() {
+
+                this.style.display = 'block';// this will block the display after leaving mouse
+                this.classList.remove('dragged');// here we removed dragged class
+                draggedItem = null;
+            }
+            // for selecting the text,image, icon and move it on the desired path
+            function dragOver(e) {
+                e.preventDefault();
+            }
+         
+            function dragEnter(e) {
+                e.preventDefault();
+                this.classList.add('drag-over');
+            }
+            // Mouse is above the right container and ready to drop
+            function dragLeave() {
+                this.classList.remove('drag-over');
+            }
+            // when you leave your mouse and item is dropped 
+            function drop() {
+                this.classList.remove('drag-over');
+                this.appendChild(draggedItem);
+                popUpSuccess();
+            }
+            // after dropping below function displays the message of dropped content successfully
+            function popUpSuccess() {
+                const successMessage = document.createElement('p');
+                successMessage.classList.add('success-message');
+                successMessage.innerText = 'Item dropped successfully!';
+                rightContainer.appendChild(successMessage);
+                // Adding timeout here to display the message for only 1 second 
+                setTimeout(function () {
+                    setTimeout(function () {
+                        successMessage.remove();
+                    }, 1000);
+                }, 0);
+            }
+           
+            function resetContainers() {
+                rightContainer.innerHTML = '<h3>DROP</h3>';// message  in  the right conatiner after pressing reset
+                items.forEach(function (item) {
+                    leftContainer.appendChild(item);
+                });
+            }
+        });
+
+    </script>
+</body>
+
+</html>
